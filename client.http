@@ -6,6 +6,31 @@
 GET {{baseUrl}}/health
 
 
-# get rooms
+### get rooms
 
 GET {{baseUrl}}/rooms 
+
+###Create room
+
+POST {{baseUrl}}/rooms
+Content-Type: application/json
+
+{
+    "name": "Sala de convivência",
+    "description": "pergunta qualquer coisa"
+}
+
+
+### Get Room Questions
+
+GET {{baseUrl}}/rooms/6fa754e6-a7c4-4ac6-a971-5b4000cc0e87/questions
+
+
+### Create Question
+
+POST {{baseUrl}}/rooms/6fa754e6-a7c4-4ac6-a971-5b4000cc0e87/questions
+Content-Type: application/json
+
+{
+    "question": "Qual seu animal favorito?"
+}
