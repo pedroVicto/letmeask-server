@@ -1,6 +1,9 @@
+// biome-ignore assist/source/organizeImports: <explanatio>
 import type { FastifyPluginCallbackZod } from "fastify-type-provider-zod";
 import { db } from "../../db/connection.ts";
 import { schema } from "../../db/schema/index.ts";
+import { eq, count } from "drizzle-orm";
+
 
 export const getRoomsRoute: FastifyPluginCallbackZod = (app) => {
     app.get('/rooms', async () => {
@@ -8,9 +11,13 @@ export const getRoomsRoute: FastifyPluginCallbackZod = (app) => {
         await db.select({
             id: schema.rooms.id,
             name: schema.rooms.name,
+            createdAt: schema.rooms.createdAt,
+            questionsCount: count(schema.questions.id),
         })
         .from(schema.rooms)
-        .orderBy(schema.rooms.creatdAt)
+        .leftJoin(schema.questions, eq(schema.questions.roomId, schema.rooms.id))
+        .groupBy(schema.rooms.id, schema.rooms.name)
+        .orderBy(schema.rooms.createdAt)
         return results
     })
 }
